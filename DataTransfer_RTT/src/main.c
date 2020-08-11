@@ -20,14 +20,19 @@
 #include "main.h"
 
 #define BUFF_SIZE 1024
+#define SEND_SIZE 80
+#define SEND_LOOP 2500
 
 uint8_t buffer_1024_Byte[BUFF_SIZE];
+char    send_buffer_Char[2*BUFF_SIZE+2];
 struct SwTimer elapse_timer;
 struct SwTimer_Duration elapsed;
+uint32_t printf_sending_time;
 
-bool start_test = false;
+volatile bool start_test = false;
 void SetupTestData(void);
 void ExecuteTest(void);
+void SetupExecuteTest(void);
 
 int main(void)
 {
@@ -56,10 +61,12 @@ int main(void)
 
         if(start_test)
         {
-        	printf("Send 256 kB of data\n");
+        	printf("Send %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
         	SetupTestData();
 			ExecuteTest();
-			printf("time: %d ns\n", (int)elapsed.nanoseconds);
+        	//SetupExecuteTest();
+        	printf("Send %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
+			printf("time: %lu %lu ms\n", elapsed.seconds , elapsed.nanoseconds / 1000000L);
         	start_test = false;
         }
 
@@ -81,24 +88,72 @@ void PB_TransitionEvent(void *arg)
 
 void SetupTestData(void)
 {
-	for(int i = 0; i < BUFF_SIZE; i++)
+	for(int i = 0; i < SEND_SIZE; i++)
 	{
 		buffer_1024_Byte[i] = rand();
 	}
 }
 void ExecuteTest(void)
 {
-	SwTimer_Start(&elapse_timer);
-	//SEGGER_RTT_Write(0, buffer_1024_Byte, 1024);
-#if 1
-	for (int i = 0; i < 256;i++)
-	{
-		for(int j = 0; j < BUFF_SIZE; j++)
-			{
-				SEGGER_RTT_printf(0, "%d\n", buffer_1024_Byte[j]);
-			}
+	char *hexchar;
+	for(int j = 0; j < SEND_SIZE; j++) {
+		hexchar = send_buffer_Char + 2*j;
+		*hexchar = (buffer_1024_Byte[j] >> 4);
+		*hexchar += '0';
+		if (*hexchar > '9') {
+			*hexchar += 7;
+		}
+		hexchar ++;
+		*hexchar = (buffer_1024_Byte[j] & 0x0f);
+		*hexchar += '0';
+		if (*hexchar > '9') {
+			*hexchar += 7;
+		}
 	}
-#endif
+	send_buffer_Char[2*SEND_SIZE] = '\n';
+	send_buffer_Char[2*SEND_SIZE+1] = 0;
+
+	SwTimer_Start(&elapse_timer);
+	for (int i = 0; i < SEND_LOOP; i++) {
+		//printf(send_buffer_Char); // really bad performance
+		SEGGER_RTT_printf(0, "%s", send_buffer_Char);
+		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
+		//SEGGER_RTT_WriteString(0, send_buffer_Char);
+	}
+	SwTimer_GetElapsed(&elapse_timer, &elapsed);
+	SwTimer_Stop(&elapse_timer);
+}
+
+void SetupExecuteTest(void)
+{
+	char *hexchar;
+	SwTimer_Start(&elapse_timer);
+	for (int i = 0; i < SEND_LOOP; i++) {
+		for(int j = 0; j < SEND_SIZE; j++) {
+			buffer_1024_Byte[j] = rand();
+		}
+		for(int j = 0; j < SEND_SIZE; j++) {
+			hexchar = send_buffer_Char + 2*j;
+			*hexchar = (buffer_1024_Byte[j] >> 4);
+			*hexchar += '0';
+			if (*hexchar > '9') {
+				*hexchar += 7;
+			}
+			hexchar ++;
+			*hexchar = (buffer_1024_Byte[j] & 0x0f);
+			*hexchar += '0';
+			if (*hexchar > '9') {
+				*hexchar += 7;
+			}
+		}
+		send_buffer_Char[2*SEND_SIZE] = '\n';
+		send_buffer_Char[2*SEND_SIZE+1] = 0;
+
+		printf(send_buffer_Char);
+		//SEGGER_RTT_printf(0, "%s", send_buffer_Char);
+		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
+		//SEGGER_RTT_WriteString(0, send_buffer_Char);
+	}
 	SwTimer_GetElapsed(&elapse_timer, &elapsed);
 	SwTimer_Stop(&elapse_timer);
 }
