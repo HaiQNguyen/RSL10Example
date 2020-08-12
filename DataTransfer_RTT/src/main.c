@@ -21,7 +21,7 @@
 
 #define BUFF_SIZE 1024
 #define SEND_SIZE 80
-#define SEND_LOOP 2500
+#define SEND_LOOP 10000
 
 uint8_t buffer_1024_Byte[BUFF_SIZE];
 char    send_buffer_Char[2*BUFF_SIZE+2];
@@ -126,12 +126,16 @@ void ExecuteTest(void)
 
 void SetupExecuteTest(void)
 {
-	char *hexchar;
+	for(int j = 0; j < SEND_SIZE; j++) {
+		buffer_1024_Byte[j] = rand();
+	}
+
 	SwTimer_Start(&elapse_timer);
 	for (int i = 0; i < SEND_LOOP; i++) {
-		for(int j = 0; j < SEND_SIZE; j++) {
-			buffer_1024_Byte[j] = rand();
-		}
+		char *hexchar;
+//		for(int j = 0; j < SEND_SIZE; j++) {
+//			buffer_1024_Byte[j] = rand();
+//		}
 		for(int j = 0; j < SEND_SIZE; j++) {
 			hexchar = send_buffer_Char + 2*j;
 			*hexchar = (buffer_1024_Byte[j] >> 4);
