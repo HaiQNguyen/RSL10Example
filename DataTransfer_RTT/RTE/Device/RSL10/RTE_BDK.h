@@ -37,7 +37,7 @@
 //   <1=> 24 MHz
 //   <2=> 16 MHz
 //   <3=> 8 MHz
-#define RTE_HAL_CLK_CONF                 3
+#define RTE_HAL_CLK_CONF                 0
 
 // <o> APP Task Event Kernel message handler count. <2-64>
 // <i> Maximum number of message handlers that can be assigned to application task.

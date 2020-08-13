@@ -19,20 +19,39 @@
 #include <stdio.h>
 #include "main.h"
 
+
+//#define USING_SW_TIMER
+
+
 #define BUFF_SIZE 1024
 #define SEND_SIZE 80
 #define SEND_LOOP 2500
 
 uint8_t buffer_1024_Byte[BUFF_SIZE];
 char    send_buffer_Char[2*BUFF_SIZE+2];
-struct SwTimer elapse_timer;
-struct SwTimer_Duration elapsed;
 uint32_t printf_sending_time;
+
 
 volatile bool start_test = false;
 void SetupTestData(void);
 void ExecuteTest(void);
 void SetupExecuteTest(void);
+
+//Struct to hold elapse time in millisecond
+typedef struct {
+	uint32_t start;
+	uint32_t elapse;
+}Time_Elapse_Millis;
+
+Time_Elapse_Millis time_elapse;
+
+//Start counting time
+void Timer_Start(Time_Elapse_Millis * t);
+
+// Stop counting time
+// calculate number of ms has passed since the Timer_Start is called
+// this number can be access via t-> elapse
+void Timer_Stop(Time_Elapse_Millis * t);
 
 int main(void)
 {
@@ -51,13 +70,13 @@ int main(void)
     /* AttachInt -> Callback will be called directly from interrupt routine. */
     BTN_AttachScheduled(BTN_EVENT_RELEASED, &PB_TransitionEvent, (void*)BTN0, BTN0);
 
-
-    SwTimer_Initialize(&elapse_timer);
     printf("APP: Entering main loop.\r\n");
+
     while (1)
     {
         /* Execute any events that have occurred & refresh Watchdog timer. */
         BDK_Schedule();
+
 
         if(start_test)
         {
@@ -65,8 +84,8 @@ int main(void)
         	SetupTestData();
 			ExecuteTest();
         	//SetupExecuteTest();
-        	printf("Send %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
-			printf("time: %lu %lu ms\n", elapsed.seconds , elapsed.nanoseconds / 1000000L);
+        	printf("\n\nSend %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
+			printf("\n\ntime: %lu ms\n", time_elapse.elapse);
         	start_test = false;
         }
 
@@ -113,21 +132,20 @@ void ExecuteTest(void)
 	send_buffer_Char[2*SEND_SIZE] = '\n';
 	send_buffer_Char[2*SEND_SIZE+1] = 0;
 
-	SwTimer_Start(&elapse_timer);
+	Timer_Start(&time_elapse);
 	for (int i = 0; i < SEND_LOOP; i++) {
 		//printf(send_buffer_Char); // really bad performance
 		SEGGER_RTT_printf(0, "%s", send_buffer_Char);
 		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
 		//SEGGER_RTT_WriteString(0, send_buffer_Char);
 	}
-	SwTimer_GetElapsed(&elapse_timer, &elapsed);
-	SwTimer_Stop(&elapse_timer);
+	Timer_Stop(&time_elapse);
 }
 
 void SetupExecuteTest(void)
 {
 	char *hexchar;
-	SwTimer_Start(&elapse_timer);
+	Timer_Start(&time_elapse);
 	for (int i = 0; i < SEND_LOOP; i++) {
 		for(int j = 0; j < SEND_SIZE; j++) {
 			buffer_1024_Byte[j] = rand();
@@ -154,6 +172,27 @@ void SetupExecuteTest(void)
 		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
 		//SEGGER_RTT_WriteString(0, send_buffer_Char);
 	}
-	SwTimer_GetElapsed(&elapse_timer, &elapsed);
-	SwTimer_Stop(&elapse_timer);
+	Timer_Stop(&time_elapse);
 }
+
+
+/*Code for counting time*/
+void Timer_Start(Time_Elapse_Millis * t)
+{
+
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->start = HAL_Time();
+#endif
+}
+
+void Timer_Stop(Time_Elapse_Millis * t)
+{
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->elapse = HAL_Time() - t->start;
+#endif
+}
+
