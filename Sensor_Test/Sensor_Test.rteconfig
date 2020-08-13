@@ -35,12 +35,12 @@
       <file category="header" name="include/target/RSL10_SENSE/LedNames.h"/>
       <file category="header" name="include/target/RSL10_SENSE/ButtonNames.h"/>
     </component>
-    <component Cclass="Components" Cgroup="Motion Sensor" Csub="BHI160 Firmware" Cvariant="di01 BMI160 BMM150" Cvendor="ONSemiconductor" Cversion="1.0.4">
+    <component Cclass="Components" Cgroup="Motion Sensor" Csub="BHI160 Firmware" Cvariant="di03 BMI160 BMM150" Cvendor="ONSemiconductor" Cversion="1.0.4">
       <package name="BDK" url="www.onsemi.com/b-idk" vendor="ONSemiconductor" version="1.12.1"/>
       <file category="doc" name="docs/html/_c_m_s_i_s__c_o_m_p_o_n_e_n_t_s.html#CC_BHI160_FIRMWARE"/>
       <file category="source" name="source/firmware/Components/BHy1_driver_and_MCU_solution/examples/firmware/bhy1_firmware.c"/>
       <file category="header" name="include/components/bhy1_firmware/bhy1_firmware.h"/>
-      <file category="header" name="include/components/bhy1_firmware/Bosch_PCB_7183_di01_BMI160_BMM150-7183_di01.2.1.10836_170103.h"/>
+      <file category="header" name="include/components/bhy1_firmware/Bosch_PCB_7183_di03_BMI160_BMM150-7183_di03.2.1.11696_170103.h"/>
     </component>
     <component Cclass="Components" Cgroup="Motion Sensor" Csub="BHy1 Driver" Cvendor="ONSemiconductor" Cversion="1.0.4">
       <package name="BDK" url="www.onsemi.com/b-idk" vendor="ONSemiconductor" version="1.12.1"/>

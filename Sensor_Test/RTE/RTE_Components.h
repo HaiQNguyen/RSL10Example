@@ -2,8 +2,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: sense_button
- * RTE configuration: sense_button.rteconfig
+ * Project: Sensor_Test
+ * RTE configuration: Sensor_Test.rteconfig
 */
 #ifndef RTE_COMPONENTS_H
 #define RTE_COMPONENTS_H
@@ -21,8 +21,8 @@
 #define RTE_HB_BOARD_SUPPORT_LIBRARIES_LED
 /* ONSemiconductor.RSL10-SENSE-GEVK::Board Support.Pinmap */
 #define RTE_BDK_BOARD_SUPPORT HB_GEVB
-/* ONSemiconductor::Components.Motion Sensor.BHI160 Firmware.di01 BMI160 BMM150 */
-#define RTE_COMPONENTS_BHI160_FIRMWARE_DI01_BMI160_BMM150
+/* ONSemiconductor::Components.Motion Sensor.BHI160 Firmware.di03 BMI160 BMM150 */
+#define RTE_COMPONENTS_BHI160_FIRMWARE_DI03_BMI160_BMM150
 /* ONSemiconductor::Components.Motion Sensor.BHy1 Driver */
 #define RTE_COMPONENTS_BHY1
 /* ONSemiconductor::Device.BDK.Event Callback */

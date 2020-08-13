@@ -2,8 +2,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: sense_button
- * RTE configuration: sense_button.rteconfig
+ * Project: Sensor_Test
+ * RTE configuration: Sensor_Test.rteconfig
 */
 #ifndef PRE_INCLUDE_GLOBAL_H
 #define PRE_INCLUDE_GLOBAL_H
