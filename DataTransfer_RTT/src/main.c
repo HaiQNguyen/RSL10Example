@@ -19,15 +19,39 @@
 #include <stdio.h>
 #include "main.h"
 
+
+//#define USING_SW_TIMER
+
+
 #define BUFF_SIZE 1024
+#define SEND_SIZE 80
+#define SEND_LOOP 2500
 
 uint8_t buffer_1024_Byte[BUFF_SIZE];
-struct SwTimer elapse_timer;
-struct SwTimer_Duration elapsed;
+char    send_buffer_Char[2*BUFF_SIZE+2];
+uint32_t printf_sending_time;
 
-bool start_test = false;
+
+volatile bool start_test = false;
 void SetupTestData(void);
 void ExecuteTest(void);
+void SetupExecuteTest(void);
+
+//Struct to hold elapse time in millisecond
+typedef struct {
+	uint32_t start;
+	uint32_t elapse;
+}Time_Elapse_Millis;
+
+Time_Elapse_Millis time_elapse;
+
+//Start counting time
+void Timer_Start(Time_Elapse_Millis * t);
+
+// Stop counting time
+// calculate number of ms has passed since the Timer_Start is called
+// this number can be access via t-> elapse
+void Timer_Stop(Time_Elapse_Millis * t);
 
 int main(void)
 {
@@ -46,20 +70,22 @@ int main(void)
     /* AttachInt -> Callback will be called directly from interrupt routine. */
     BTN_AttachScheduled(BTN_EVENT_RELEASED, &PB_TransitionEvent, (void*)BTN0, BTN0);
 
-
-    SwTimer_Initialize(&elapse_timer);
     printf("APP: Entering main loop.\r\n");
+
     while (1)
     {
         /* Execute any events that have occurred & refresh Watchdog timer. */
         BDK_Schedule();
 
+
         if(start_test)
         {
-        	printf("Send 256 kB of data\n");
+        	printf("Send %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
         	SetupTestData();
 			ExecuteTest();
-			printf("time: %d ns\n", (int)elapsed.nanoseconds);
+        	//SetupExecuteTest();
+        	printf("\n\nSend %d * %d bytes of data\n", SEND_LOOP, SEND_SIZE);
+			printf("\n\ntime: %lu ms\n", time_elapse.elapse);
         	start_test = false;
         }
 
@@ -81,24 +107,92 @@ void PB_TransitionEvent(void *arg)
 
 void SetupTestData(void)
 {
-	for(int i = 0; i < BUFF_SIZE; i++)
+	for(int i = 0; i < SEND_SIZE; i++)
 	{
 		buffer_1024_Byte[i] = rand();
 	}
 }
 void ExecuteTest(void)
 {
-	SwTimer_Start(&elapse_timer);
-	//SEGGER_RTT_Write(0, buffer_1024_Byte, 1024);
-#if 1
-	for (int i = 0; i < 256;i++)
-	{
-		for(int j = 0; j < BUFF_SIZE; j++)
-			{
-				SEGGER_RTT_printf(0, "%d\n", buffer_1024_Byte[j]);
-			}
+	char *hexchar;
+	for(int j = 0; j < SEND_SIZE; j++) {
+		hexchar = send_buffer_Char + 2*j;
+		*hexchar = (buffer_1024_Byte[j] >> 4);
+		*hexchar += '0';
+		if (*hexchar > '9') {
+			*hexchar += 7;
+		}
+		hexchar ++;
+		*hexchar = (buffer_1024_Byte[j] & 0x0f);
+		*hexchar += '0';
+		if (*hexchar > '9') {
+			*hexchar += 7;
+		}
 	}
-#endif
-	SwTimer_GetElapsed(&elapse_timer, &elapsed);
-	SwTimer_Stop(&elapse_timer);
+	send_buffer_Char[2*SEND_SIZE] = '\n';
+	send_buffer_Char[2*SEND_SIZE+1] = 0;
+
+	Timer_Start(&time_elapse);
+	for (int i = 0; i < SEND_LOOP; i++) {
+		//printf(send_buffer_Char); // really bad performance
+		SEGGER_RTT_printf(0, "%s", send_buffer_Char);
+		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
+		//SEGGER_RTT_WriteString(0, send_buffer_Char);
+	}
+	Timer_Stop(&time_elapse);
 }
+
+void SetupExecuteTest(void)
+{
+	char *hexchar;
+	Timer_Start(&time_elapse);
+	for (int i = 0; i < SEND_LOOP; i++) {
+		for(int j = 0; j < SEND_SIZE; j++) {
+			buffer_1024_Byte[j] = rand();
+		}
+		for(int j = 0; j < SEND_SIZE; j++) {
+			hexchar = send_buffer_Char + 2*j;
+			*hexchar = (buffer_1024_Byte[j] >> 4);
+			*hexchar += '0';
+			if (*hexchar > '9') {
+				*hexchar += 7;
+			}
+			hexchar ++;
+			*hexchar = (buffer_1024_Byte[j] & 0x0f);
+			*hexchar += '0';
+			if (*hexchar > '9') {
+				*hexchar += 7;
+			}
+		}
+		send_buffer_Char[2*SEND_SIZE] = '\n';
+		send_buffer_Char[2*SEND_SIZE+1] = 0;
+
+		printf(send_buffer_Char);
+		//SEGGER_RTT_printf(0, "%s", send_buffer_Char);
+		//SEGGER_RTT_Write(0, send_buffer_Char, 30);
+		//SEGGER_RTT_WriteString(0, send_buffer_Char);
+	}
+	Timer_Stop(&time_elapse);
+}
+
+
+/*Code for counting time*/
+void Timer_Start(Time_Elapse_Millis * t)
+{
+
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->start = HAL_Time();
+#endif
+}
+
+void Timer_Stop(Time_Elapse_Millis * t)
+{
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->elapse = HAL_Time() - t->start;
+#endif
+}
+
