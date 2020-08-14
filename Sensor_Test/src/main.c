@@ -17,14 +17,25 @@
 #include <stdio.h>
 #include "main.h"
 
+#warning uncomment this to read sensor data
+//#define TEST_SENSOR
+
+#warning uncomment this to read adc data
+#define TEST_ADC
+
+
 void Magnetic_Callback(bhy_data_generic_t *data, bhy_virtual_sensor_t sensor);
 void LinearAccel_CallBack(bhy_data_generic_t *data, bhy_virtual_sensor_t sensor);
 void Gyro_CallBack(bhy_data_generic_t *data, bhy_virtual_sensor_t sensor);
+void ADC_BATMON_IRQHandler(void);
+
+bool adc_ready = false;
+volatile int adc_value;
 
 int main(void)
 {
 	//return status of the sensor library
-	int32_t retval;
+
 
     /* Initialize BDK library, set system clock (default 8MHz). */
     BDK_Initialize();
@@ -41,13 +52,33 @@ int main(void)
     /* AttachInt -> Callback will be called directly from interrupt routine. */
     BTN_AttachScheduled(BTN_EVENT_TRANSITION, &PB_TransitionEvent, (void*)BTN0, BTN0);
 
+#ifdef TEST_ADC
+    /*ADC Setup ***********************************************************************/
+    //Set DIO3 as ADC pin
+    Sys_DIO_Config(3,DIO_MODE_DISABLE | DIO_NO_PULL);
 
+    //8 channel are sample
+    //sample = slow clock/1280
+    Sys_ADC_Set_Config(ADC_NORMAL | ADC_PRESCALE_1280H);
+
+    //channel 3 contains ADC_positive_inout from DIO3
+    Sys_ADC_InputSelectConfig(3, ADC_POS_INPUT_DIO3);
+
+    //enable interrupt on channel 3 and disable batery monitor
+    Sys_ADC_Set_BATMONIntConfig(INT_EBL_ADC | ADC_INT_CH3 | INT_DIS_BATMON_ALARM);
+
+    //Enable interupt
+    NVIC_EnableIRQ(ADC_BATMON_IRQn);
+#endif
+
+#ifdef TEST_SENSOR
+	/*Sensor setup**********************************************************************/
+	int32_t retval;
 
     /* Increase I2C bus speed to 400kHz. */
-    HAL_I2C_Init();
-	//HAL_I2C_SetBusSpeed(HAL_I2C_BUS_SPEED_FAST);
+    //HAL_I2C_Init();
+	HAL_I2C_SetBusSpeed(HAL_I2C_BUS_SPEED_FAST);
 
-	/*Sensor setup**********************************************************************/
 	retval = BHI160_NDOF_Initialize();
 	if(BHY_SUCCESS != retval)
 	{
@@ -75,13 +106,20 @@ int main(void)
 		printf("gyro enable error\n");
 		return 0;
 	}
+#endif
 
     printf("APP: Entering main loop.\r\n");
     while (1)
     {
         /* Execute any events that have occurred & refresh Watchdog timer. */
         BDK_Schedule();
-
+#ifdef TEST_ADC
+        if(adc_ready)
+        {
+        	printf("adc value: %d\n", adc_value);
+        	adc_ready = false;
+        }
+#endif
         SYS_WAIT_FOR_INTERRUPT;
     }
 
@@ -131,3 +169,8 @@ void Gyro_CallBack(bhy_data_generic_t *data, bhy_virtual_sensor_t sensor)
 		printf("Gyroscope - id:%d x:%d y:%d z:%d\n", data->data_vector.sensor_id, x, y, z);
 }
 
+void ADC_BATMON_IRQHandler(void)
+{
+	 adc_value = ADC->DATA_TRIM_CH[3];
+	 adc_ready = true;
+}
