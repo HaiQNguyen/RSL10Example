@@ -29,37 +29,37 @@
 		<link>
 			<name>RTE/Board_Support/BHI160_NDOF.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/BoardSupport/hb/src/BHI160_NDOF.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/BoardSupport/hb/src/BHI160_NDOF.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Board_Support/bhy_support.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/BoardSupport/hb/src/bhy_support.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/BoardSupport/hb/src/bhy_support.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Board_Support/button_api.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/BoardSupport/hb/src/button_api.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/BoardSupport/hb/src/button_api.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Board_Support/led_api.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/BoardSupport/hb/src/led_api.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/BoardSupport/hb/src/led_api.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Components/bhy.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Components/BHy1_driver_and_MCU_solution/driver/src/bhy.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Components/BHy1_driver_and_MCU_solution/driver/src/bhy.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Components/bhy1_firmware.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Components/BHy1_driver_and_MCU_solution/examples/firmware/bhy1_firmware.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Components/BHy1_driver_and_MCU_solution/examples/firmware/bhy1_firmware.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Components/bhy_uc_driver.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Components/BHy1_driver_and_MCU_solution/driver/src/bhy_uc_driver.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Components/BHy1_driver_and_MCU_solution/driver/src/bhy_uc_driver.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/stubprf.c</name>
@@ -69,72 +69,72 @@
 		<link>
 			<name>RTE/Utility/SEGGER_RTT_Syscalls_GCC.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/Utility/SEGGER/RTT/src/SEGGER_RTT_Syscalls_GCC.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/Utility/SEGGER/RTT/src/SEGGER_RTT_Syscalls_GCC.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Utility/libRTT.a</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/lib/libRTT.a</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/lib/libRTT.a</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/BDK.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/BDK.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/BDK.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/BDK_Task.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/BDK_Task.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/BDK_Task.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/EventCallback.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/EventCallback.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/EventCallback.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL_I2C.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL_I2C.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL_I2C.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL_SPI.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL_SPI.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL_SPI.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL_UART.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL_UART.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL_UART.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL_clock.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL_clock.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL_clock.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/HAL_error.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/HAL_error.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/HAL_error.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/I2C_RSLxx.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/cmsis_driver/I2C_RSLxx.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/cmsis_driver/I2C_RSLxx.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/SPI_RSLxx.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/cmsis_driver/SPI_RSLxx.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/cmsis_driver/SPI_RSLxx.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/USART_RSLxx.c</name>
 			<type>1</type>
-			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.12.1/source/firmware/Device/BDK/code/hal/cmsis_driver/USART_RSLxx.c</locationURI>
+			<locationURI>$%7Bcmsis_pack_root%7D/ONSemiconductor/BDK/1.15.2/source/firmware/Device/BDK/code/hal/cmsis_driver/USART_RSLxx.c</locationURI>
 		</link>
 		<link>
 			<name>RTE/Device/RSL10/libblelib.a</name>

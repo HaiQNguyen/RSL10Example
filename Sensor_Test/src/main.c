@@ -32,6 +32,24 @@ void ADC_BATMON_IRQHandler(void);
 bool adc_ready = false;
 volatile int adc_value;
 
+
+//Struct to hold elapse time in millisecond
+typedef struct {
+	uint32_t start;
+	uint32_t elapse;
+}Time_Elapse_Millis;
+
+Time_Elapse_Millis time_elapse;
+
+//Start counting time
+void Timer_Start(Time_Elapse_Millis * t);
+
+// Stop counting time
+// calculate number of ms has passed since the Timer_Start is called
+// this number can be access via t-> elapse
+void Timer_Stop(Time_Elapse_Millis * t);
+
+
 int main(void)
 {
 	//return status of the sensor library
@@ -59,13 +77,14 @@ int main(void)
 
     //8 channel are sample
     //sample = slow clock/1280
-    Sys_ADC_Set_Config(ADC_NORMAL | ADC_PRESCALE_1280H);
+    Sys_ADC_Set_Config( ADC_NORMAL | ADC_PRESCALE_128H);
 
     //channel 3 contains ADC_positive_inout from DIO3
-    Sys_ADC_InputSelectConfig(3, ADC_POS_INPUT_DIO3);
+    Sys_ADC_InputSelectConfig(3, ADC_POS_INPUT_DIO3 | ADC_NEG_INPUT_GND);
 
     //enable interrupt on channel 3 and disable batery monitor
     Sys_ADC_Set_BATMONIntConfig(INT_EBL_ADC | ADC_INT_CH3 | INT_DIS_BATMON_ALARM);
+
 
     //Enable interupt
     NVIC_EnableIRQ(ADC_BATMON_IRQn);
@@ -108,15 +127,34 @@ int main(void)
 	}
 #endif
 
+	Timer_Start(&time_elapse);
     printf("APP: Entering main loop.\r\n");
     while (1)
     {
-        /* Execute any events that have occurred & refresh Watchdog timer. */
+    	static int count=0;
+    	static unsigned int minRead = 65535;
+    	static unsigned int maxRead = 0;
+    	static unsigned long readings=0;
+    	/* Execute any events that have occurred & refresh Watchdog timer. */
         BDK_Schedule();
 #ifdef TEST_ADC
         if(adc_ready)
         {
-        	printf("adc value: %d\n", adc_value);
+        	readings += adc_value;
+        	if (adc_value < minRead) minRead=adc_value;
+        	if (adc_value > maxRead) maxRead=adc_value;
+        	count ++;
+
+        	Timer_Stop(&time_elapse);
+        	if (time_elapse.elapse > 250) {
+        		Timer_Start(&time_elapse);
+            	printf("rate: %5.5d, avg: %d, min: %d, max:%d\n", count*4, (int)(readings/count), minRead, maxRead);
+            	count=0;
+            	minRead = 65535;
+            	maxRead = 0;
+            	readings=0;
+        	}
+
         	adc_ready = false;
         }
 #endif
@@ -173,4 +211,24 @@ void ADC_BATMON_IRQHandler(void)
 {
 	 adc_value = ADC->DATA_TRIM_CH[3];
 	 adc_ready = true;
+}
+
+/*Code for counting time*/
+void Timer_Start(Time_Elapse_Millis * t)
+{
+
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->start = HAL_Time();
+#endif
+}
+
+void Timer_Stop(Time_Elapse_Millis * t)
+{
+#ifdef USING_SW_TIMER
+#error not implemeneted
+#else
+	t->elapse = HAL_Time() - t->start;
+#endif
 }
